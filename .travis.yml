@@ -1,6 +1,6 @@
 language: java
 jdk: oraclejdk8
 before_install:
-  - chmod +x build.sh
+  - chmod +x buildscript
 script: ./buildscript
 os: linux
