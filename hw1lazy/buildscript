@@ -1,0 +1,9 @@
+rootdir=$(pwd)
+for dir in $(find . -maxdepth 1 -type d); do
+	if [ "$dir" != "." ] && [ "$dir" != "./.git" ]; then
+		cd $dir		
+		mvn test -B
+		cd $rootdir
+	fi	
+done	
+	
