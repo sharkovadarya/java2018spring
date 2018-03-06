@@ -16,6 +16,9 @@ public class LazyRegular<T> extends AbstractLazy<T> {
         super(supplier);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public @Nullable

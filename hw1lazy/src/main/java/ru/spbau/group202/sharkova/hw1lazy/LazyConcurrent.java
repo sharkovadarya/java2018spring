@@ -15,6 +15,9 @@ public class LazyConcurrent<T> extends AbstractLazy<T> {
         super(supplier);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public @Nullable

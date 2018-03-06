@@ -9,5 +9,9 @@ package ru.spbau.group202.sharkova.hw1lazy;
  * @param <T> type of the return value
  */
 public interface Lazy <T> {
+	/**
+	 * Gets a value (from the provided supplier) lazily.
+	 * @return the supplier value
+	 */
     T get();
 }
