@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  */
 public class LazyConcurrent<T> extends AbstractLazy<T> {
 
-    private Object value = noValue;
+    private volatile Object value = NO_VALUE;
 
     public LazyConcurrent(Supplier<T> supplier) {
         super(supplier);
@@ -23,12 +23,12 @@ public class LazyConcurrent<T> extends AbstractLazy<T> {
     public @Nullable
     T get() {
         // to avoid unnecessary blocking
-        if (value != noValue) {
+        if (value != NO_VALUE) {
             return (T) value;
         }
 
         synchronized (this) {
-            if (value == noValue) {
+            if (value == NO_VALUE) {
                 value = supplier.get();
             }
         }

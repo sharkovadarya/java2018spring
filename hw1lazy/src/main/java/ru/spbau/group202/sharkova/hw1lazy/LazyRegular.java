@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  */
 public class LazyRegular<T> extends AbstractLazy<T> {
 
-    private Object value = noValue;
+    private Object value = NO_VALUE;
 
     public LazyRegular(Supplier<T> supplier) {
         super(supplier);
@@ -23,7 +23,7 @@ public class LazyRegular<T> extends AbstractLazy<T> {
     @Override
     public @Nullable
     T get() {
-        if (value == noValue) {
+        if (value == NO_VALUE) {
             value = supplier.get();
         }
 

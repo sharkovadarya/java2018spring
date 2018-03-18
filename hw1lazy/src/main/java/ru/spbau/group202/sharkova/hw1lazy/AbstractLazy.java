@@ -7,7 +7,7 @@ import java.util.function.Supplier;
  * in order to avoid code duplication.
  */
 abstract public class AbstractLazy<T> implements Lazy<T> {
-    protected static final Object noValue = new Object();
+    protected static final Object NO_VALUE = new Object();
 
     protected Supplier<T> supplier;
 
