@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" maxHeight="Infinity" maxWidth="Infinity" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.group202.sharkova.hw2xo.Statistics">
+   <children>
+      <TableView fx:id="statisticsTable" prefHeight="400.0" prefWidth="600.0">
+        <columns>
+          <TableColumn prefWidth="60" text="No.">
+              <cellValueFactory>
+                  <PropertyValueFactory property="numberProperty" />
+              </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="360" text="Player">
+              <cellValueFactory>
+                  <PropertyValueFactory property="player" />
+              </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="60" text="W">
+              <cellValueFactory>
+                  <PropertyValueFactory property="wins" />
+              </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="60" text="L">
+              <cellValueFactory>
+                  <PropertyValueFactory property="losses" />
+              </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="60" text="D">
+              <cellValueFactory>
+                  <PropertyValueFactory property="draws" />
+              </cellValueFactory>
+          </TableColumn>
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
