@@ -11,6 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.Comparator;
 import java.util.HashMap;
 
+/**
+ * This class gathers and displays statistics
+ * for the current game session.
+ */
 public class Statistics {
 
     // In this array, 0 is for winsProperty, 1 for lossesProperty, 2 for drawsProperty
@@ -21,6 +25,11 @@ public class Statistics {
         this.table = table;
     }
 
+    /**
+     * This methods records a win in the statistics.
+     * @param winner winner name
+     * @param loser loser name
+     */
     public void recordWin(String winner, String loser) {
         int[] record = records.get(winner);
         if (record == null) {
@@ -38,6 +47,11 @@ public class Statistics {
         records.put(loser, record);
     }
 
+    /**
+     * This method records a draw.
+     * @param player1 first player name
+     * @param player2 second player name
+     */
     public void recordDraw(String player1, String player2) {
         int[] record = records.get(player1);
         if (record == null) {
@@ -55,6 +69,9 @@ public class Statistics {
         records.put(player2, record);
     }
 
+    /**
+     * This method initializes the statistics table.
+     */
     public void initializeTable() {
         ObservableList<TableRecord> data = FXCollections.observableArrayList();
         for (HashMap.Entry<String, int[]> entry : records.entrySet()) {
@@ -62,6 +79,9 @@ public class Statistics {
                                         entry.getValue()[1], entry.getValue()[2]));
 
         }
+
+        data.sort(Comparator.comparing(TableRecord::getWinsProperty).reversed()
+                     .thenComparing(TableRecord::getDrawsProperty).reversed());
 
         for (int i = 0; i < data.size(); i++) {
             data.get(i).setNumberProperty(Integer.toString(i + 1));
@@ -78,13 +98,15 @@ public class Statistics {
         TableColumn draws = new TableColumn("Draws");
         draws.setCellValueFactory(new PropertyValueFactory<>("drawsProperty"));
 
-        data.sort(Comparator.comparing(TableRecord::getWinsProperty).reversed());
-
         table.setItems(data);
         table.getColumns().addAll(number, player, wins, losses, draws);
 
     }
 
+    /**
+     * This class represents a table record;
+     * it is used by a TableView object.
+     */
     public class TableRecord {
         private StringProperty numberProperty;
         private StringProperty playerProperty;
