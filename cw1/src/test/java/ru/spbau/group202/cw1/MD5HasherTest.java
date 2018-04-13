@@ -13,6 +13,9 @@ import static org.junit.Assert.*;
 // IMPORTANT: neither of those tests pass because of incorrect paths
 // but all of them have passed manual testing (Main with args)
 
+// IMPORTANT: testEmptyDir will only work if you create 'dir' directory manually
+// git doesn't allow empty directories to be commited
+
 /**
  * This class tests correctness of MD5Hasher implementations methods
  */
@@ -20,6 +23,7 @@ public class MD5HasherTest {
 
     private final static int numberOfThreads = 4;
 
+    // create 'dir' directory manually!
     private void testEmptyDir(MD5Hasher hasher) throws NoSuchAlgorithmException, IOException {
         // TODO this is currently not working
         // but this is how I'd implement the tests if I had time to figure out
