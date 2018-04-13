@@ -3,18 +3,15 @@ package ru.spbau.group202.cw1;
 import org.junit.Test;
 
 import javax.xml.bind.DatatypeConverter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 
 import static org.junit.Assert.*;
 
-// IMPORTANT: neither of those tests pass because of incorrect paths
-// but all of them have passed manual testing (Main with args)
-
 // IMPORTANT: testEmptyDir will only work if you create 'dir' directory manually
-// git doesn't allow empty directories to be commited
+// git doesn't allow empty directories to be committed
 
 /**
  * This class tests correctness of MD5Hasher implementations methods
@@ -25,10 +22,8 @@ public class MD5HasherTest {
 
     // create 'dir' directory manually!
     private void testEmptyDir(MD5Hasher hasher) throws NoSuchAlgorithmException, IOException {
-        // TODO this is currently not working
-        // but this is how I'd implement the tests if I had time to figure out
-        // how to get this test to believe the provided path exists
-        Path path = Paths.get("/src/test/resources/testdir/dir");
+        File file = new File("src/test/resources/testdir/dir");
+        Path path = file.toPath();
         byte[] hash = hasher.getHashFromPath(path);
         String str = DatatypeConverter.printHexBinary(hash);
         // this md5 checksum was calculated here: http://progs.be/md5.html
@@ -36,7 +31,8 @@ public class MD5HasherTest {
     }
 
     private void testEmptyFile(MD5Hasher hasher) throws NoSuchAlgorithmException, IOException {
-        Path path = Paths.get(this.getClass().getResource("/testdir/file2.txt").toString());
+        File file = new File("src/test/resources/testdir/file2.txt");
+        Path path = file.toPath();
         byte[] hash = hasher.getHashFromPath(path);
         String str = DatatypeConverter.printHexBinary(hash);
         // this md5 checksum was calculated here: http://onlinemd5.com/
@@ -44,7 +40,8 @@ public class MD5HasherTest {
     }
 
     private void testNonEmptyFile(MD5Hasher hasher) throws NoSuchAlgorithmException, IOException {
-        Path path = Paths.get(this.getClass().getResource("/testdir/file1.txt").toString());
+        File file = new File("src/test/resources/testdir/file1.txt");
+        Path path = file.toPath();
         byte[] hash = hasher.getHashFromPath(path);
         String str = DatatypeConverter.printHexBinary(hash);
         // this md5 checksum was calculated here: http://onlinemd5.com/
@@ -92,7 +89,8 @@ public class MD5HasherTest {
         MD5SingleThread regularHasher = new MD5SingleThread();
         MD5MultiThread concurrentHasher = new MD5MultiThread(numberOfThreads);
 
-        Path path = Paths.get("/src/test/resources/testdir");
+        File file = new File("src/test/resources/testdir");
+        Path path = file.toPath();
         byte[] hash = regularHasher.getHashFromPath(path);
         String str1 = DatatypeConverter.printHexBinary(hash);
         hash = concurrentHasher.getHashFromPath(path);
