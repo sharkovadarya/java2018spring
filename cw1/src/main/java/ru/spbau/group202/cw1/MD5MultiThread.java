@@ -40,7 +40,7 @@ public class MD5MultiThread extends MD5Hasher {
         return md5.digest();
     }
 
-    private void processDirectory(Path path, MessageDigest md) throws IOException {
+    private void processDirectory(@NotNull Path path, @NotNull MessageDigest md) throws IOException {
         md.update(path.getFileName().toString().getBytes());
         ArrayList<RecursiveTask<byte[]>> tasks = new ArrayList<>();
         for (Path p : Files.walk(path).filter(Files::isRegularFile).collect(Collectors.toList())) {
@@ -50,6 +50,7 @@ public class MD5MultiThread extends MD5Hasher {
                     try {
                         return getHashFromPath(p);
                     } catch (Exception e) {
+                        // TODO handle exceptions
                     }
                     return null;
                 }
@@ -71,7 +72,7 @@ public class MD5MultiThread extends MD5Hasher {
         }
     }
 
-    private void processFile(Path path, MessageDigest md) throws IOException {
+    private void processFile(@NotNull Path path, @NotNull MessageDigest md) throws IOException {
         try (DigestInputStream stream = new DigestInputStream(Files.newInputStream(path), md)) {
             byte[] buf = new byte[BUFFER_SIZE];
             while (stream.read(buf) != -1) {
