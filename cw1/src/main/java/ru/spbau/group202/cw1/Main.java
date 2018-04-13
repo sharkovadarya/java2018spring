@@ -18,12 +18,16 @@ public class Main {
                 long start = System.currentTimeMillis();
                 byte[] res = regularHasher.getHashFromPath(Paths.get(path));
                 System.out.println(DatatypeConverter.printHexBinary(res));
-                System.out.println("Single-thread computation: " + (System.currentTimeMillis() - start) + " ms.");
+                long diff1 = System.currentTimeMillis() - start;
+                System.out.println("Single-thread computation: " + diff1 + " ms.");
 
                 start = System.currentTimeMillis();
                 res = concurrentHasher.getHashFromPath(Paths.get(path));
                 System.out.println(DatatypeConverter.printHexBinary(res));
-                System.out.println("Multi-thread computation: " + (System.currentTimeMillis() - start) + " ms.");
+                long diff2 = System.currentTimeMillis() - start;
+                System.out.println("Multi-thread computation: " + diff2 + " ms.");
+
+                System.out.println("\n The difference is " + (diff1 - diff2) + " ms.\n");
             } catch (Exception e) {
                 if (e.getMessage() != null) {
                     System.out.println(e.getMessage());
