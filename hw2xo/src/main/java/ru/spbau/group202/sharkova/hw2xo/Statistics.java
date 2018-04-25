@@ -80,8 +80,7 @@ public class Statistics {
 
         }
 
-        data.sort(Comparator.comparing(TableRecord::getWinsProperty).reversed()
-                     .thenComparing(TableRecord::getDrawsProperty).reversed());
+        data.sort(Comparator.comparing(TableRecord::getWinsProperty).reversed());
 
         for (int i = 0; i < data.size(); i++) {
             data.get(i).setNumberProperty(Integer.toString(i + 1));

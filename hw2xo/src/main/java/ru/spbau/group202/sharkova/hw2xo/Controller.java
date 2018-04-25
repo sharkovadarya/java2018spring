@@ -71,10 +71,25 @@ public class Controller {
      * This method initializes VBox side menu buttons.
      */
     private void initializeVBoxButtons() {
-        Button newGameButton = (Button) vBox.getChildren().get(0);
-        newGameButton.setOnAction(e -> showNewGameDialog());
+        Button hotSeatButton = (Button) vBox.getChildren().get(0);
+        hotSeatButton.setOnAction(e -> {
+            mode = GameMode.HOT_SEAT;
+            restart();
+        });
 
-        Button statisticsButton = (Button) vBox.getChildren().get(1);
+        Button easyBotButton = (Button) vBox.getChildren().get(1);
+        easyBotButton.setOnAction(e -> {
+            mode = GameMode.COMPUTER_EASY;
+            restart();
+        });
+
+        Button hardBotButton = (Button) vBox.getChildren().get(2);
+        hardBotButton.setOnAction(e -> {
+            mode = GameMode.COMPUTER_HARD;
+            restart();
+        });
+
+        Button statisticsButton = (Button) vBox.getChildren().get(3);
         statisticsButton.setOnAction(e -> showStatistics());
     }
 
@@ -99,44 +114,6 @@ public class Controller {
             alert.setTitle("Failed to load statistics");
             alert.setHeaderText("An error has occured.");
             alert.show();
-        }
-    }
-
-    /**
-     * This method creates a new dialog
-     * prompting the user to choose new game type.
-     */
-    private void showNewGameDialog() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Choose new game type");
-        alert.setHeaderText("New Game Type");
-
-        ButtonType buttonTypeHS = new ButtonType("Hot Seat\nMode");
-        ButtonType buttonTypeCME = new ButtonType("Computer\nMode:\nEasy");
-        ButtonType buttonTypeCMH = new ButtonType("Computer\nMode:\nHard");
-        ButtonType buttonTypeCancel = new ButtonType("Cancel",
-                                            ButtonBar.ButtonData.CANCEL_CLOSE);
-
-        alert.getButtonTypes().setAll(buttonTypeHS, buttonTypeCME, buttonTypeCMH,
-                                                               buttonTypeCancel);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (!result.isPresent()) {
-            alert.close();
-            return;
-        }
-
-        if (result.get() == buttonTypeHS) {
-            mode = GameMode.HOT_SEAT;
-            restart();
-        } else if (result.get() == buttonTypeCME) {
-            mode = GameMode.COMPUTER_EASY;
-            restart();
-        } else if (result.get() == buttonTypeCMH) {
-            mode = GameMode.COMPUTER_HARD;
-            restart();
-        } else if (result.get() == buttonTypeCancel){
-            alert.close();
         }
     }
 

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.TextFlow?>
 
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.TextArea?>
 <HBox prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.group202.sharkova.hw2xo.Controller">
     <children>
-        <GridPane fx:id="boardGridPane" layoutX="50" layoutY="25" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700" prefWidth="700" HBox.hgrow="ALWAYS">
+        <GridPane fx:id="boardGridPane" layoutX="50" layoutY="25" maxHeight="Infinity" maxWidth="Infinity" prefHeight="700" prefWidth="700" HBox.hgrow="ALWAYS">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="33.3" prefWidth="100.0" />
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -24,22 +22,24 @@
                 <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="ALWAYS" />
             </rowConstraints>
             <children>
-                <Button fx:id="button00" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  />
-                <Button fx:id="button01" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="1" />
-                <Button fx:id="button02" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <Button fx:id="button10" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.rowIndex="1" />
-                <Button fx:id="button11" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Button fx:id="button12" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <Button fx:id="button20" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Button fx:id="button21" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button fx:id="button22" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false"  GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Button fx:id="button00" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" />
+                <Button fx:id="button01" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="1" />
+                <Button fx:id="button02" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Button fx:id="button10" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.rowIndex="1" />
+                <Button fx:id="button11" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Button fx:id="button12" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Button fx:id="button20" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Button fx:id="button21" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button fx:id="button22" maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             </children>
         </GridPane>
         <VBox fx:id="menuVBox" layoutX="786.0" layoutY="336.0" prefHeight="77.0" prefWidth="178.0">
             <children>
-                <Button maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="New Game" />
+                <Button maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="Hot Seat Mode" />
+                <Button maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="Easy Bot Mode" />
+                <Button maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="Hard Bot Mode" />
                 <Button maxHeight="Infinity" maxWidth="Infinity" mnemonicParsing="false" text="Statistics" />
-                <TextArea fx:id="menuTextArea"/>
+                <TextArea fx:id="menuTextArea" />
             </children>
         </VBox>
     </children>
