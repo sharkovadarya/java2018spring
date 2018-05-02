@@ -26,7 +26,12 @@ public class GetTask implements Runnable {
     public void run() {
         try {
             File file = new File(fileName);
-            if (!file.exists() || file.isDirectory()) {
+            if (!file.exists()) {
+                clientInput.writeLong(0);
+                return;
+            }
+
+            if (file.isDirectory()) {
                 clientInput.writeLong(-1);
                 return;
             }

@@ -112,7 +112,7 @@ public class Client {
 
             long size = outputForServer.readLong();
             if (size == -1) {
-                throw new UnableToSaveFileException("The file does not exist or is a directory");
+                throw new UnableToSaveFileException("The file is a directory");
             }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buffer = new byte[BUFFER_SIZE];

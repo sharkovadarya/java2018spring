@@ -23,6 +23,11 @@ public class ListTask implements Runnable {
     public void run() {
         try {
             File dir = new File(directoryName);
+            if (!dir.exists()) {
+                clientInput.writeInt(0);
+                return;
+            }
+
             if (dir.isDirectory()) {
                 File[] files = dir.listFiles();
                 if (files == null) {

@@ -72,7 +72,7 @@ public class ClientTest {
     public void getFolderTest() throws IOException, FTPException, UnableToSaveFileException {
         initialize();
         Path newDir = createDir();
-        client.get(newDir.getFileName().toString(), saveFolder.getRoot().getAbsolutePath());
+        client.get(newDir.toString(), saveFolder.getRoot().getAbsolutePath());
     }
 
     @Test
