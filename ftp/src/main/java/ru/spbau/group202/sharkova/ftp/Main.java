@@ -5,6 +5,9 @@ import ru.spbau.group202.sharkova.ftp.utils.exceptions.NotADirectoryException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.ftp.FTPException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.UnableToSaveFileException;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,7 +55,10 @@ public class Main {
                         break;
                     case GET:
                         String file = scanner.next();
-                        client.get(file, DOWNLOAD_DIRECTORY);
+                        byte[] content = client.get(file);
+                        FileOutputStream fos = new FileOutputStream(DOWNLOAD_DIRECTORY + new File(file).getName());
+                        fos.write(content);
+                        fos.close();
                         System.out.println("Saved file " + file + " in directory " + DOWNLOAD_DIRECTORY);
                         break;
                     case EXIT:
@@ -61,6 +67,8 @@ public class Main {
                 }
             } catch (UnableToSaveFileException|NotADirectoryException e) {
                 System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Unable to save file");
             } catch (FTPException e) {
                 System.out.println(e.getMessage());
                 return;

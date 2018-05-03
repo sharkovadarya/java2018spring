@@ -99,11 +99,11 @@ public class Client {
      * This method handles the client part of the 'get' request.
      * It reads a file from server and writes it to the given directory.
      * @param filename name of the file to be downloaded
-     * @param pathToSave directory which the file is downloaded to
+     * @return byte array storing file content
      * @throws FTPException if there are problems with the server connection
      * @throws UnableToSaveFileException if the given file was nonexistent or a directory
      */
-    public void get(@NotNull String filename, @NotNull String pathToSave)
+    public byte[] get(@NotNull String filename)
             throws FTPException, UnableToSaveFileException {
         try {
             inputForServer.writeInt(GET_COMMAND);
@@ -124,10 +124,7 @@ public class Client {
                 cur += readSize;
             }
 
-            FileOutputStream fos = new FileOutputStream(pathToSave + new File(filename).getName());
-            baos.writeTo(fos);
-            fos.close();
-            baos.close();
+            return baos.toByteArray();
         } catch (IOException e) {
             disconnect();
             throw new FTPConnectionException("Unable to retrieve information from server.");

@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +28,6 @@ public class ClientTest {
 
     @Rule
     public TemporaryFolder dir = new TemporaryFolder();
-    @Rule
-    public TemporaryFolder saveFolder = new TemporaryFolder();
     private List<String> expected = new ArrayList<>();
 
     private static Server server;
@@ -72,18 +69,18 @@ public class ClientTest {
     public void getFolderTest() throws IOException, FTPException, UnableToSaveFileException {
         initialize();
         Path newDir = createDir();
-        client.get(newDir.toString(), saveFolder.getRoot().getAbsolutePath());
+        client.get(newDir.toString());
     }
+
 
     @Test
     public void getEmptyFileTest() throws IOException, FTPException, UnableToSaveFileException {
         initialize();
         Path newFile = createFile();
-        client.get(newFile.toString(), saveFolder.getRoot().getAbsolutePath());
-        assertEquals(0, Files.size(newFile));
-        assertEquals(0, Files.size(Paths.get(saveFolder.getRoot().getAbsolutePath() +
-                newFile.getFileName().toString())));
+        byte[] content = client.get(newFile.toString());
+        assertEquals(0, content.length);
     }
+
 
     @Test
     public void getTest() throws IOException, FTPException, UnableToSaveFileException {
@@ -91,11 +88,10 @@ public class ClientTest {
         Path newFile = createFile();
         byte[] content = {32, 14, 15, 78};
         Files.write(newFile, content);
-        client.get(newFile.toString(), saveFolder.getRoot().getAbsolutePath());
-        byte[] actual = Files.readAllBytes(Paths.get(saveFolder.getRoot().getAbsolutePath() +
-                newFile.getFileName().toString()));
+        byte[] actual = client.get(newFile.toString());
         assertArrayEquals(content, actual);
     }
+
 
     // 'big' means 'bigger than the buffer size'
     @Test
@@ -111,9 +107,7 @@ public class ClientTest {
             content[i + 4] = 89;
         }
         Files.write(newFile, content);
-        client.get(newFile.toString(), saveFolder.getRoot().getAbsolutePath());
-        byte[] actual = Files.readAllBytes(Paths.get(saveFolder.getRoot().getAbsolutePath() +
-                newFile.getFileName().toString()));
+        byte[] actual = client.get(newFile.toString());
         assertArrayEquals(content, actual);
     }
 
