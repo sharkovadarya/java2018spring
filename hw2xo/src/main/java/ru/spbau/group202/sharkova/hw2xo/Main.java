@@ -17,6 +17,8 @@ public class Main extends Application {
                               .getResource("mainscreen.fxml"));
 
         primaryStage.setTitle("XO");
+        primaryStage.setMinHeight(200);
+        primaryStage.setMinWidth(200);
 
 
         Controller controller = new Controller();

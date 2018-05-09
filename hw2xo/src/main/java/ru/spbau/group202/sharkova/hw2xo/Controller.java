@@ -1,11 +1,15 @@
 package ru.spbau.group202.sharkova.hw2xo;
 
 import javafx.animation.PauseTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -60,12 +64,36 @@ public class Controller {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 Button button = (Button) pane.getChildren().get(i * rows + j);
-                button.setStyle("-fx-font-size: 100px; ");
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 button.setOnAction(e -> onBoardButtonAction(button));
+                button.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) ->
+                        scaleButton(button));
             }
         }
     }
+
+    /**
+     * This method scales button font size.
+     * @param button button with text to be scaled
+     */
+    private void scaleButton(Button button) {
+        double w = button.getWidth();
+        double h = button.getHeight();
+
+        double bw = button.prefWidth(-1);
+        double bh = button.prefHeight(-1);
+
+        if (w == 0 || h == 0 || bw == 0 || bh == 0) return ;
+
+        double hScale = w / bw ;
+        double vScale = h / bw ;
+
+        double scale = Math.min(hScale, vScale);
+
+        button.lookup(".text").setScaleX(scale);
+        button.lookup(".text").setScaleY(scale);
+    }
+
 
     /**
      * This method initializes VBox side menu buttons.
