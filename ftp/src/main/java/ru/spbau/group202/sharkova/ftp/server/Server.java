@@ -4,6 +4,7 @@ import ru.spbau.group202.sharkova.ftp.server.handlers.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Scanner;
 
 /**
  * This class implements a simple server
@@ -15,6 +16,10 @@ import java.net.ServerSocket;
 public class Server {
 
     private static final int DEFAULT_PORT = 8080;
+
+    private static final String START = "start";
+    private static final String STOP = "stop";
+    private static final String EXIT = "exit";
 
     private final int port;
 
@@ -66,6 +71,37 @@ public class Server {
 
     public static void main(String[] args) {
         Server server = new Server(DEFAULT_PORT);
-        server.start();
+
+        System.out.println("Input 'start' to start server, 'stop' to stop server, 'exit' to exit program.");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String command = scanner.next();
+            switch (command) {
+                case START:
+                    if (server.isRunning()) {
+                        System.out.println("The server is already running.");
+                    } else {
+                        server.start();
+                        System.out.println("Started server.");
+                    }
+                    break;
+                case STOP:
+                    if (!server.isRunning()) {
+                        System.out.println("The server is not running.");
+                    } else {
+                        server.finish();
+                        System.out.println("Stopped server.");
+                    }
+                    break;
+                case EXIT:
+                    if (server.isRunning()) {
+                        server.finish();
+                    }
+                    System.exit(0);
+                default:
+                    System.out.println("Unknown command.");
+            }
+        }
+
     }
 }
