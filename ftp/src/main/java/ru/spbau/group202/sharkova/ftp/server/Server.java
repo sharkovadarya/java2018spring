@@ -14,7 +14,7 @@ import java.net.ServerSocket;
  */
 public class Server {
 
-    private static final int defaultPort = 8080;
+    private static final int DEFAULT_PORT = 8080;
 
     private final int port;
 
@@ -24,6 +24,10 @@ public class Server {
 
     public Server(int port) {
         this.port = port;
+    }
+
+    public static int getDefaultPort() {
+        return DEFAULT_PORT;
     }
 
     /**
@@ -61,7 +65,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(defaultPort);
+        Server server = new Server(DEFAULT_PORT);
         server.start();
     }
 }

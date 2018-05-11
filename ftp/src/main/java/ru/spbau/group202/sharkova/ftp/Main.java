@@ -1,6 +1,7 @@
 package ru.spbau.group202.sharkova.ftp;
 
 import ru.spbau.group202.sharkova.ftp.client.Client;
+import ru.spbau.group202.sharkova.ftp.client.FileEntry;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.NotADirectoryException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.ftp.FTPException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.UnableToSaveFileException;
@@ -48,7 +49,7 @@ public class Main {
                 switch (command) {
                     case LIST:
                         String directory = scanner.next();
-                        List<String> records = client.list(directory);
+                        List<FileEntry> records = client.list(directory);
                         System.out.println(records.size() +
                                 " files/subdirectories in directory " + directory + ":\n");
                         records.forEach(System.out::println);

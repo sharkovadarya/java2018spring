@@ -69,22 +69,23 @@ public class Client {
      * @throws FTPException if there are problems with the server connection
      * @throws NotADirectoryException if the 'directory' param path is not one of a directory
      */
-    public List<String> list(@NotNull String directory)
+    public List<FileEntry> list(@NotNull String directory)
             throws FTPException, NotADirectoryException {
         try {
             inputForServer.writeInt(LIST_COMMAND);
             inputForServer.writeUTF(directory);
             inputForServer.flush();
 
-            ArrayList<String> records = new ArrayList<>();
+            ArrayList<FileEntry> records = new ArrayList<>();
             int size = outputForServer.readInt();
             if (size == -1) {
                 throw new NotADirectoryException("Provided path is not one of a directory.");
             }
+
             for (int i = 0; i < size; i++) {
                 String name = outputForServer.readUTF();
                 boolean isDir = outputForServer.readBoolean();
-                records.add(name + " " + (isDir ? "directory" : "file"));
+                records.add(new FileEntry(name, isDir));
             }
 
             return records;

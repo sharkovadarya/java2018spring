@@ -28,14 +28,13 @@ public class ClientTest {
 
     @Rule
     public TemporaryFolder dir = new TemporaryFolder();
-    private List<String> expected = new ArrayList<>();
+    private List<FileEntry> expected = new ArrayList<>();
 
-    private static Server server;
     private Client client;
 
     @BeforeClass
     public static void startSever() {
-        server = new Server(PORT);
+        Server server = new Server(PORT);
         server.start();
     }
 
@@ -43,7 +42,7 @@ public class ClientTest {
     public void listTest() throws FTPException, IOException, NotADirectoryException {
         initialize();
 
-        List<String> actual = client.list(dir.getRoot().getAbsolutePath());
+        List<FileEntry> actual = client.list(dir.getRoot().getAbsolutePath());
         assertTrue(actual.isEmpty());
 
         for (int i = 0; i < 3; i++) {
@@ -53,8 +52,8 @@ public class ClientTest {
 
         actual = client.list(dir.getRoot().getAbsolutePath());
         assertEquals(expected.size(), actual.size());
-        for (String s : expected) {
-            assertTrue(actual.contains(s));
+        for (FileEntry entry : expected) {
+            assertTrue(actual.contains(entry));
         }
     }
 
@@ -118,13 +117,13 @@ public class ClientTest {
 
     private Path createDir() throws IOException {
         File newDir = dir.newFolder();
-        expected.add(newDir.getName() + " directory");
+        expected.add(new FileEntry(newDir.getName(), true));
         return newDir.toPath();
     }
 
     private Path createFile() throws IOException {
         File newFile = dir.newFile();
-        expected.add(newFile.getName() + " file");
+        expected.add(new FileEntry(newFile.getName(), false));
         return newFile.toPath();
     }
 }
