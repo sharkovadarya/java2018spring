@@ -1,4 +1,4 @@
-package ru.spbau.group202.sharkova.hw5.xunit;
+package ru.spbau.group202.sharkova.hw5.xunit.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +15,7 @@ public @interface TestMethod {
     default NoExceptionExpected.class;
 
     // fake class because something needs to be returned from default implementation of expected()
-    public class NoExceptionExpected extends Exception {
+    class NoExceptionExpected extends Exception {
 
     }
 }

@@ -1,4 +1,4 @@
-package ru.spbau.group202.sharkova.hw5.xunit;
+package ru.spbau.group202.sharkova.hw5.xunit.results;
 
 public class TestResultExceptionNotThrown extends TestResult{
     public TestResultExceptionNotThrown(String className, String testName,

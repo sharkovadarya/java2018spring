@@ -1,18 +1,18 @@
 package ru.spbau.group202.sharkova.hw5;
 
 import ru.spbau.group202.sharkova.hw5.xunit.TestHandler;
-import ru.spbau.group202.sharkova.hw5.xunit.TestResult;
+import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassAfterMethodFailedException;
+import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassBeforeMethodFailedException;
+import ru.spbau.group202.sharkova.hw5.xunit.exceptions.IncorrectTestException;
+import ru.spbau.group202.sharkova.hw5.xunit.results.TestResult;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -52,6 +52,12 @@ public class Main {
             System.out.println("Class not found.");
         } catch (IOException e) {
             System.out.println("Unable to process class.");
+        } catch (ClassBeforeMethodFailedException e) {
+            System.out.println("Method executed before class failed: " + e.getMessage());
+        } catch (ClassAfterMethodFailedException e) {
+            System.out.println("Method executed after class failed: " + e.getMessage());
+        } catch (IncorrectTestException e) {
+            System.out.println("Incorrect test: " + e.getMessage());
         }
     }
 

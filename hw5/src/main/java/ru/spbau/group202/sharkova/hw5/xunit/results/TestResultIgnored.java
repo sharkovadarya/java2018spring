@@ -1,4 +1,4 @@
-package ru.spbau.group202.sharkova.hw5.xunit;
+package ru.spbau.group202.sharkova.hw5.xunit.results;
 
 public class TestResultIgnored extends TestResult {
     public TestResultIgnored(String className, String testName, String cause, long time) {
