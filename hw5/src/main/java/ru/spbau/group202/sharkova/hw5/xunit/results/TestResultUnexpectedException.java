@@ -1,5 +1,8 @@
 package ru.spbau.group202.sharkova.hw5.xunit.results;
 
+/**
+ * Result of a test that threw an expection without it being specified in 'expected' attribute.
+ */
 public class TestResultUnexpectedException extends TestResult {
     private Exception exception;
 

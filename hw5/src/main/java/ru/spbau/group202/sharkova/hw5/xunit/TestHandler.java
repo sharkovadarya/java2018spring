@@ -12,6 +12,9 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class finds test methods in a class and runs them, forming a list of results.
+ */
 public class TestHandler {
 
     private Class<?> cl;
@@ -39,6 +42,13 @@ public class TestHandler {
         }
     }
 
+    /**
+     * Run all tests in class and get results.
+     * @return list of test results
+     * @throws IncorrectTestException if the test couldn't have been properly invoked
+     * @throws ClassBeforeMethodFailedException if before class methods couldn't have been executed
+     * @throws ClassAfterMethodFailedException if after class methods couldn't have been executed
+     */
     public List<TestResult> runTests()
             throws IncorrectTestException, ClassBeforeMethodFailedException,
             ClassAfterMethodFailedException {
@@ -65,6 +75,11 @@ public class TestHandler {
 
     }
 
+    /**
+     * Runs a single test and returns the result.
+     * @return test result
+     * @throws IncorrectTestException if the test couldn't have been properly invoked
+     */
     private TestResult runTest(Method method) throws IncorrectTestException {
         TestMethod testMethodAnnotation = method.getAnnotation(TestMethod.class);
         if (!testMethodAnnotation.ignore().isEmpty()) {
@@ -112,6 +127,13 @@ public class TestHandler {
                 method.getParameterCount() == 0;
     }
 
+    private boolean isUsedForTestsStatic(Method method) {
+        return  Modifier.isStatic(method.getModifiers()) &&
+                Modifier.isPublic(method.getModifiers()) &&
+                method.getReturnType().equals(Void.TYPE) &&
+                method.getParameterCount() == 0;
+    }
+
     private boolean isTestMethod(Method method) {
         return isUsedForTests(method) && method.getAnnotation(TestMethod.class) != null;
     }
@@ -125,11 +147,11 @@ public class TestHandler {
     }
 
     private boolean isClassBeforeMethod(Method method) {
-        return isUsedForTests(method) && method.getAnnotation(ClassBeforeMethod.class) != null;
+        return isUsedForTestsStatic(method) && method.getAnnotation(ClassBeforeMethod.class) != null;
     }
 
     private boolean isClassAfterMethod(Method method) {
-        return isUsedForTests(method) && method.getAnnotation(ClassAfterMethod.class) != null;
+        return isUsedForTestsStatic(method) && method.getAnnotation(ClassAfterMethod.class) != null;
     }
 
     private void invokeMethods(Object o, List<Method> methods)

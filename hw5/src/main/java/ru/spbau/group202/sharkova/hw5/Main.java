@@ -6,7 +6,6 @@ import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassBeforeMethodFailedEx
 import ru.spbau.group202.sharkova.hw5.xunit.exceptions.IncorrectTestException;
 import ru.spbau.group202.sharkova.hw5.xunit.results.TestResult;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -14,17 +13,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Console application to handle command line arguments and output results
+ * such as info on every test (class and method name, execution time, status).
+ */
 public class Main {
 
     public static void main(String[] args) {
-        if (args.length != 1) {
+        if (args.length != 2) {
             System.out.println("Incorrect usage.");
-            System.out.println("Input .class file name.");
+            System.out.println("Input path to root directory of test classes and class name (with package).");
+            System.out.println("Example: /home/username/hw5/target/test-classes/" +
+                    " ru.spbau.group202.sharkova.hw5.xunit.util.OneTestMethodClass");
             return;
         }
 
         try {
-            Class<?> testClass = loadClass(args[0]);
+            Class<?> testClass = loadClass(args[0], args[1]);
             TestHandler handler = new TestHandler(testClass);
             List<TestResult> results = handler.runTests();
             if (results.isEmpty()) {
@@ -38,16 +43,16 @@ public class Main {
             for (int i = 0; i < results.size(); i++) {
                 TestResult res = results.get(i);
                 System.out.println("test " + i + " " + res.getClassName() + "." + res.getTestName());
-                System.out.println("test " + (res.passed() ? "passed" : "failed"));
+                System.out.println("test status: " + (res.passed() ? "passed" : "failed"));
                 System.out.println(res.getDescription());
-                System.out.println("execution time: " + res.getTime());
+                System.out.println("execution time: " + res.getTime() + " milliseconds");
                 totalTime += res.getTime();
                 if (res.passed()) {
                     passed++;
                 }
             }
 
-            System.out.println(passed + " tests out of " + results.size() + " passed in " + totalTime);
+            System.out.println(passed + " tests out of " + results.size() + " passed in " + totalTime + " milliseconds.");
         } catch (ClassNotFoundException e) {
             System.out.println("Class not found.");
         } catch (IOException e) {
@@ -61,12 +66,10 @@ public class Main {
         }
     }
 
-    private static Class<?> loadClass(String pathToClass)
+    private static Class<?> loadClass(String pathToClass, String className)
             throws IOException, ClassNotFoundException {
         Path path = Paths.get(pathToClass);
         URLClassLoader classLoader = new URLClassLoader(new URL[]{path.toUri().toURL()});
-        String className = path.toString().replace(File.separatorChar, '.');
-        className = className.substring(0, className.lastIndexOf('.'));
         return classLoader.loadClass(className);
     }
 }

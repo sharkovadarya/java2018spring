@@ -1,5 +1,8 @@
 package ru.spbau.group202.sharkova.hw5.xunit.results;
 
+/**
+ * Utility class storing test result (class name, test name, execution time, status, description).
+ */
 abstract public class TestResult {
     private String className;
     private String testName;
