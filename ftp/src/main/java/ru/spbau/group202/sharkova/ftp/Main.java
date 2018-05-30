@@ -2,6 +2,7 @@ package ru.spbau.group202.sharkova.ftp;
 
 import ru.spbau.group202.sharkova.ftp.client.Client;
 import ru.spbau.group202.sharkova.ftp.client.FileEntry;
+import ru.spbau.group202.sharkova.ftp.utils.Protocol;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.NotADirectoryException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.ftp.FTPException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.UnableToSaveFileException;
@@ -9,6 +10,9 @@ import ru.spbau.group202.sharkova.ftp.utils.exceptions.UnableToSaveFileException
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,15 +28,12 @@ public class Main {
     private static final String GET = "get";
     private static final String EXIT = "exit";
 
-    private static final String HOST = "localhost";
-    private static final int PORT = 8080;
-
     private static final String DOWNLOAD_DIRECTORY = "src/main/resources/files/";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        Client client = new Client(HOST, PORT);
+        Client client = new Client(Protocol.HOST, Protocol.PORT);
 
         try {
             client.connect();
@@ -55,6 +56,10 @@ public class Main {
                         records.forEach(System.out::println);
                         break;
                     case GET:
+                        Path downloadDirectory = Paths.get(DOWNLOAD_DIRECTORY);
+                        if (!Files.exists(downloadDirectory)) {
+                            Files.createDirectory(downloadDirectory);
+                        }
                         String file = scanner.next();
                         byte[] content = client.get(file);
                         FileOutputStream fos = new FileOutputStream(DOWNLOAD_DIRECTORY + new File(file).getName());

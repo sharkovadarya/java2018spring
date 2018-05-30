@@ -1,5 +1,6 @@
 package ru.spbau.group202.sharkova.ftp.server;
 
+import ru.spbau.group202.sharkova.ftp.utils.Protocol;
 import ru.spbau.group202.sharkova.ftp.server.handlers.ClientHandler;
 
 import java.io.IOException;
@@ -15,8 +16,6 @@ import java.util.Scanner;
  */
 public class Server {
 
-    private static final int DEFAULT_PORT = 8080;
-
     private static final String START = "start";
     private static final String STOP = "stop";
     private static final String EXIT = "exit";
@@ -31,10 +30,6 @@ public class Server {
         this.port = port;
     }
 
-    public static int getDefaultPort() {
-        return DEFAULT_PORT;
-    }
-
     /**
      * This method starts the server.
      */
@@ -44,9 +39,13 @@ public class Server {
             isRunning = true;
             Thread thread = new Thread(new ClientHandler(this));
             thread.start();
+            System.out.println("Started server.");
         } catch (IOException e) {
             //unable to connect
-            return;
+            System.out.println("Unable to connect to server");
+            if (e.getMessage() != null) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -70,7 +69,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(DEFAULT_PORT);
+        Server server = new Server(Protocol.PORT);
 
         System.out.println("Input 'start' to start server, 'stop' to stop server, 'exit' to exit program.");
         Scanner scanner = new Scanner(System.in);
@@ -82,7 +81,6 @@ public class Server {
                         System.out.println("The server is already running.");
                     } else {
                         server.start();
-                        System.out.println("Started server.");
                     }
                     break;
                 case STOP:

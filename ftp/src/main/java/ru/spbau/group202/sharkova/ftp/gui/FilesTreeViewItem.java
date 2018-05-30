@@ -64,8 +64,6 @@ public class FilesTreeViewItem extends TreeItem<TreeViewFile> {
         }
 
         List<FileEntry> files = client.list(file.getAbsolutePath());
-        files.sort((e1, e2) ->
-                (e1.getFilename().toLowerCase().compareTo(e2.getFilename().toLowerCase())));
 
         for (FileEntry entry : files) {
             TreeViewFile childFile =

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.spbau.group202.sharkova.ftp.server.Server;
 import ru.spbau.group202.sharkova.ftp.server.tasks.GetTask;
 import ru.spbau.group202.sharkova.ftp.server.tasks.ListTask;
+import ru.spbau.group202.sharkova.ftp.utils.RequestType;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,19 +36,20 @@ public class ConnectionHandler implements Runnable {
 
             while (server.isRunning()) {
                 int request;
-                try {
-                    request = clientOutput.readInt();
-                } catch (Exception e) {
+                request = clientOutput.readInt();
+                if (request >= RequestType.values().length) {
+                    System.out.println("Client sent an invalid request.");
                     return;
                 }
+                RequestType requestType = RequestType.values()[request];
 
-                switch (request) {
-                    case 1:
+                switch (requestType) {
+                    case LIST:
                         Thread listTaskThread = new Thread(
                                 new ListTask(clientInput, clientOutput.readUTF()));
                         listTaskThread.start();
                         break;
-                    case 2:
+                    case GET:
                         Thread getTaskThread = new Thread(
                                 new GetTask(clientInput, clientOutput.readUTF()));
                         getTaskThread.start();
@@ -57,7 +59,10 @@ public class ConnectionHandler implements Runnable {
                 }
             }
         } catch (IOException e) {
-            return;
+            System.out.println("Client is unavailable.");
+            if (e.getMessage() != null) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }

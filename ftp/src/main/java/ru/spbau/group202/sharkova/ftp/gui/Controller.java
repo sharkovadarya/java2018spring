@@ -10,8 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import org.jetbrains.annotations.NotNull;
+import ru.spbau.group202.sharkova.ftp.utils.Protocol;
 import ru.spbau.group202.sharkova.ftp.client.Client;
-import ru.spbau.group202.sharkova.ftp.server.Server;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.UnableToSaveFileException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.ftp.FTPConnectionException;
 import ru.spbau.group202.sharkova.ftp.utils.exceptions.ftp.FTPException;
@@ -98,7 +98,7 @@ public class Controller {
     }
 
     private void initializeClient() throws FTPConnectionException {
-        client = new Client("localhost", Server.getDefaultPort());
+        client = new Client(Protocol.HOST, Protocol.PORT);
         client.connect();
     }
 

@@ -9,9 +9,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeView;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.util.Optional;
+import java.io.File;
 
 /**
  * Application GUI client main class.
@@ -41,14 +43,12 @@ public class GuiClient extends Application {
     }
 
     private void getRootDirectory() {
-        TextInputDialog dialog = new TextInputDialog("/");
-        dialog.setTitle("Choose root directory");
-        dialog.setContentText("Input root directory:");
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose the root directory");
+        File rootDirectory = directoryChooser.showDialog(null);
 
-        Optional<String> result = dialog.showAndWait();
-
-        if (result.isPresent()) {
-            this.rootDirectory = result.get();
+        if (rootDirectory != null && rootDirectory.isDirectory()) {
+            this.rootDirectory = rootDirectory.getAbsolutePath();
         } else {
             new Alert(Alert.AlertType.ERROR,
                     "No root directory provided; closing application").showAndWait();

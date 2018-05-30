@@ -16,8 +16,8 @@ import java.util.List;
  * and execute 'list' and 'get' commands.
  */
 public class Client {
-    private static final int LIST_COMMAND = 1;
-    private static final int GET_COMMAND = 2;
+    private static final int LIST_COMMAND = 0;
+    private static final int GET_COMMAND = 1;
 
     private static final int BUFFER_SIZE = 4096;
 
