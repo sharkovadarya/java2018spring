@@ -1,9 +1,7 @@
 package ru.spbau.group202.sharkova.hw5;
 
 import ru.spbau.group202.sharkova.hw5.xunit.TestHandler;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassAfterMethodFailedException;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassBeforeMethodFailedException;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.IncorrectTestException;
+import ru.spbau.group202.sharkova.hw5.xunit.exceptions.*;
 import ru.spbau.group202.sharkova.hw5.xunit.results.TestResult;
 
 import java.io.IOException;
@@ -63,6 +61,8 @@ public class Main {
             System.out.println("Method executed after class failed: " + e.getMessage());
         } catch (IncorrectTestException e) {
             System.out.println("Incorrect test: " + e.getMessage());
+        } catch (ExtraAnnotatedMethodsException|ExtraAnnotationsException e) {
+            System.out.println(e.getMessage());
         }
     }
 

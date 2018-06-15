@@ -1,9 +1,7 @@
 package ru.spbau.group202.sharkova.hw5.xunit;
 
 import org.junit.Test;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassAfterMethodFailedException;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassBeforeMethodFailedException;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.IncorrectTestException;
+import ru.spbau.group202.sharkova.hw5.xunit.exceptions.*;
 import ru.spbau.group202.sharkova.hw5.xunit.results.*;
 import ru.spbau.group202.sharkova.hw5.xunit.util.*;
 
@@ -18,8 +16,8 @@ import static org.junit.Assert.*;
 public class TestHandlerTest {
 
     @Test
-    public void testClassWithOneTestMethod()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testClassWithOneTestMethod() throws IncorrectTestException, ClassBeforeMethodFailedException,
+            ClassAfterMethodFailedException, ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(OneTestMethodClass.class);
         List<TestResult> results = handler.runTests();
         assertEquals(1, results.size());
@@ -30,8 +28,8 @@ public class TestHandlerTest {
     }
 
     @Test
-    public void testIgnore()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testIgnore() throws IncorrectTestException, ClassBeforeMethodFailedException,
+            ClassAfterMethodFailedException, ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(IgnoreMethodClass.class);
         List<TestResult> results = handler.runTests();
         assertEquals(2, results.size());
@@ -57,8 +55,9 @@ public class TestHandlerTest {
     }
 
     @Test
-    public void testUnexpectedException()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testUnexpectedException() throws IncorrectTestException,
+            ClassBeforeMethodFailedException, ClassAfterMethodFailedException,
+            ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(UnexpectedExceptionClass.class);
         List<TestResult> results = handler.runTests();
         assertEquals(1, results.size());
@@ -72,8 +71,9 @@ public class TestHandlerTest {
     }
 
     @Test
-    public void testExpectedException()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testExpectedException() throws IncorrectTestException,
+            ClassBeforeMethodFailedException, ClassAfterMethodFailedException,
+            ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(ExpectedExceptionClass.class);
         List<TestResult> results = handler.runTests();
         assertEquals(1, results.size());
@@ -85,8 +85,9 @@ public class TestHandlerTest {
     }
 
     @Test
-    public void testExceptionNotThrown()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testExceptionNotThrown() throws IncorrectTestException,
+            ClassBeforeMethodFailedException, ClassAfterMethodFailedException,
+            ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(ExceptionNotThrownClass.class);
         List<TestResult> results = handler.runTests();
         assertEquals(1, results.size());
@@ -98,15 +99,17 @@ public class TestHandlerTest {
     }
 
     @Test(expected = IncorrectTestException.class)
-    public void testConstructorWithArguments()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException{
+    public void testConstructorWithArguments() throws IncorrectTestException,
+            ClassBeforeMethodFailedException, ClassAfterMethodFailedException,
+            ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(ConstructorWithArgumentsClass.class);
         handler.runTests();
     }
 
     @Test
-    public void testBeforeAndAfterMethods()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testBeforeAndAfterMethods() throws IncorrectTestException,
+            ClassBeforeMethodFailedException, ClassAfterMethodFailedException,
+            ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(BeforeAfterMethodsClass.class);
         assertEquals(0, BeforeAfterMethodsClass.getA());
         List<TestResult> results = handler.runTests();
@@ -119,8 +122,9 @@ public class TestHandlerTest {
     }
 
     @Test
-    public void testClassBeforeAndAfterMethods()
-            throws IncorrectTestException, ClassBeforeMethodFailedException, ClassAfterMethodFailedException {
+    public void testClassBeforeAndAfterMethods() throws IncorrectTestException,
+            ClassBeforeMethodFailedException, ClassAfterMethodFailedException,
+            ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         TestHandler handler = new TestHandler(ClassBeforeAfterMethodsClass.class);
         assertEquals(0, ClassBeforeAfterMethodsClass.getList().size());
         List<TestResult> results = handler.runTests();
@@ -143,10 +147,22 @@ public class TestHandlerTest {
         assertTrue(res2.passed());
 
         assertEquals(4, ClassBeforeAfterMethodsClass.getList().size());
-        assertEquals(new Integer(30), ClassBeforeAfterMethodsClass.getList().get(0));
-        assertEquals(new Integer(15), ClassBeforeAfterMethodsClass.getList().get(1));
+        assertTrue(ClassBeforeAfterMethodsClass.getList().get(1) == 15 && ClassBeforeAfterMethodsClass.getList().get(2) == 17 ||
+                   ClassBeforeAfterMethodsClass.getList().get(1) == 17 && ClassBeforeAfterMethodsClass.getList().get(2) == 15);
         assertEquals(new Integer(17), ClassBeforeAfterMethodsClass.getList().get(2));
         assertEquals(new Integer(11), ClassBeforeAfterMethodsClass.getList().get(3));
+    }
+
+    @Test(expected = ExtraAnnotationsException.class)
+    public void testExtraAnnotations()
+            throws ExtraAnnotatedMethodsException, ExtraAnnotationsException {
+        new TestHandler(ExtraAnnotationsClass.class);
+    }
+
+    @Test(expected = ExtraAnnotatedMethodsException.class)
+    public void testExtraAnnotatedMethods()
+            throws ExtraAnnotatedMethodsException, ExtraAnnotationsException {
+        new TestHandler(ExtraAnnotatedMethodsClass.class);
     }
 
 }

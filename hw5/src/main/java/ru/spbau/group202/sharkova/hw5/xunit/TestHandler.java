@@ -1,9 +1,7 @@
 package ru.spbau.group202.sharkova.hw5.xunit;
 
 import ru.spbau.group202.sharkova.hw5.xunit.annotations.*;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassAfterMethodFailedException;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.ClassBeforeMethodFailedException;
-import ru.spbau.group202.sharkova.hw5.xunit.exceptions.IncorrectTestException;
+import ru.spbau.group202.sharkova.hw5.xunit.exceptions.*;
 import ru.spbau.group202.sharkova.hw5.xunit.results.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,26 +17,51 @@ public class TestHandler {
 
     private Class<?> cl;
     private List<Method> testMethods = new ArrayList<>();
-    private List<Method> beforeMethods = new ArrayList<>();
-    private List<Method> afterMethods = new ArrayList<>();
-    private List<Method> classBeforeMethods = new ArrayList<>();
-    private List<Method> classAfterMethods = new ArrayList<>();
+    private Method beforeMethod = null;
+    private Method afterMethod = null;
+    private Method classBeforeMethod = null;
+    private Method classAfterMethod = null;
 
-    public TestHandler(Class<?> cl) {
+    public TestHandler(Class<?> cl) throws ExtraAnnotatedMethodsException, ExtraAnnotationsException {
         this.cl = cl;
         for (Method method : cl.getMethods()) {
+            int numberOfAnnotations = 0;
             if (isTestMethod(method)) {
                 testMethods.add(method);
-            } else if (isBeforeMethod(method)) {
-                beforeMethods.add(method);
-            } else if (isAfterMethod(method)) {
-                afterMethods.add(method);
-            } else if (isClassBeforeMethod(method)) {
-                classBeforeMethods.add(method);
-            } else if (isClassAfterMethod(method)) {
-                classAfterMethods.add(method);
+                numberOfAnnotations++;
+            }
+            if (isBeforeMethod(method)) {
+                if (beforeMethod != null) {
+                    throw new ExtraAnnotatedMethodsException("Extra 'before' methods detected.");
+                }
+                beforeMethod = method;
+                numberOfAnnotations++;
+            }
+            if (isAfterMethod(method)) {
+                if (afterMethod != null) {
+                    throw new ExtraAnnotatedMethodsException("Extra 'after' method detected.");
+                }
+                afterMethod = method;
+                numberOfAnnotations++;
+            }
+            if (isClassBeforeMethod(method)) {
+                if (classBeforeMethod != null) {
+                    throw new ExtraAnnotatedMethodsException("Extra 'before class' methods detected.");
+                }
+                classBeforeMethod = method;
+                numberOfAnnotations++;
+            }
+            if (isClassAfterMethod(method)) {
+                if (classAfterMethod != null) {
+                    throw new ExtraAnnotatedMethodsException("Extra 'after class' methods detected.");
+                }
+                classAfterMethod = method;
+                numberOfAnnotations++;
             }
 
+            if (numberOfAnnotations > 1) {
+                throw new ExtraAnnotationsException("Too many annotations on " + method.getName() + " method.");
+            }
         }
     }
 
@@ -55,7 +78,7 @@ public class TestHandler {
         List<TestResult> results = new ArrayList<>();
 
         try {
-            invokeMethods(null, classBeforeMethods);
+            invokeMethod(null, classBeforeMethod);
         } catch (InvocationTargetException e) {
             throw new ClassBeforeMethodFailedException(e);
         }
@@ -65,7 +88,7 @@ public class TestHandler {
         }
 
         try {
-            invokeMethods(null, classAfterMethods);
+            invokeMethod(null, classAfterMethod);
         } catch (InvocationTargetException e) {
             throw new ClassAfterMethodFailedException(e);
         }
@@ -96,9 +119,9 @@ public class TestHandler {
 
         long start = System.currentTimeMillis();
         try {
-            invokeMethods(o, beforeMethods);
+            invokeMethod(o, beforeMethod);
             method.invoke(o);
-            invokeMethods(o, afterMethods);
+            invokeMethod(o, afterMethod);
         } catch (InvocationTargetException e) {
             exception = (Exception) e.getCause();
         } catch (IllegalAccessException e) {
@@ -154,17 +177,15 @@ public class TestHandler {
         return isUsedForTestsStatic(method) && method.getAnnotation(ClassAfterMethod.class) != null;
     }
 
-    private void invokeMethods(Object o, List<Method> methods)
-            throws InvocationTargetException, IncorrectTestException {
-        for (Method method : methods) {
-            try {
-                method.invoke(o);
-            } catch (IllegalAccessException e) {
-                throw new IncorrectTestException(e);
-            }
+    private void invokeMethod(Object o, Method method) throws InvocationTargetException, IncorrectTestException {
+        if (method == null) {
+            return;
+        }
+
+        try {
+            method.invoke(o);
+        } catch (IllegalAccessException e) {
+            throw new IncorrectTestException(e);
         }
     }
-
-
-
 }
